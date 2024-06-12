@@ -92,7 +92,7 @@ const loadPosts = async () => {
 const displayPosts = posts => {
     posts.forEach(post => {
         const postCard = document.createElement('div');
-        postCard.classList = `lg:w-[32%] p-6 min-h-[482px]# border border-[#12132D26] rounded-3xl`;
+        postCard.classList = `p-6 min-h-[482px]# border border-[#12132D26] rounded-3xl`;
         postCard.innerHTML = `
         <img class="rounded-[20px]" src="${post.cover_image}" alt="">
             <p class="mt-6 flex items-center text-[#12132D99]"><img class="mr-2" src="images/calendar.png" alt=""><span>${post.author.posted_date ? post.author.posted_date : 'No published date'}</span></p>
