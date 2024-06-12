@@ -51,7 +51,7 @@ const displayDiscussions = discussions => {
     
     for (const envelope of allEnvelopes) {
         envelope.addEventListener("click", function (event) {
-            for (const child of discussionsContainer.children) {
+            for (const child of discussionsList.children) {
                 child.classList.remove('bg-[#797DFC1A]', 'border', 'border-second');
                 child.classList.add('bg-[#F3F3F5]');
             }
