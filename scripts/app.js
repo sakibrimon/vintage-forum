@@ -1,5 +1,7 @@
 const discussionsContainer = document.getElementById('discussions-container');
 const postsContainer = document.getElementById('posts-container');
+const loadingSpinner1 = document.getElementById('spinner1');
+const loadingSpinner2 = document.getElementById('spinner2');
 
 const loadDiscussions = async (query = '') => {
     const response = await fetch(`https://openapi.programming-hero.com/api/retro-forum/posts${query}`);
@@ -13,7 +15,7 @@ const displayDiscussions = discussions => {
     discussionsContainer.textContent = '';
     discussions.forEach((discussion, index) => {
         const discussionCard = document.createElement('div');
-        discussionCard.classList = `p-10 flex min-h-[270px]# bg-[#797DFC1A]# bg-[#F3F3F5] rounded-3xl border# border-second# inter-font`;
+        discussionCard.classList = `p-10 flex min-h-[270px]# bg-[#F3F3F5] rounded-3xl inter-font`;
         if (index > 0) {
             discussionCard.classList.add('mt-6'); 
         }
@@ -75,10 +77,8 @@ const displayDiscussions = discussions => {
             readCount.innerText = value;
         });
     }
-
+    loadingSpinner1.classList.add('hidden');
 }
-
-loadDiscussions();
 
 const loadPosts = async () => {
     const response = await fetch("https://openapi.programming-hero.com/api/retro-forum/latest-posts");
@@ -93,23 +93,22 @@ const displayPosts = posts => {
         const postCard = document.createElement('div');
         postCard.classList = `lg:w-[32%] p-6 min-h-[482px]# border border-[#12132D26] rounded-3xl`;
         postCard.innerHTML = `
-            <img class="rounded-[20px]" src="${post.cover_image}" alt="">
-                    <p class="mt-6 flex items-center text-[#12132D99]"><img class="mr-2" src="images/calendar.png" alt=""><span>${post.author.posted_date ? post.author.posted_date : 'No published date'}</span></p>
-                    <h5 class="mt-4 font-extrabold text-lg text-prime inter-font">${post.title}</h5>
-                    <p class="mt-3 text-[#12132D99]">${post.description}</p>
-                    <div class="mt-4 flex items-center">
-                        <img class="w-11 h-11 rounded-full" src="${post.profile_image}" alt="">
-                        <div class="ml-4">
-                            <h6 class="font-bold text-prime">${post.author.name}</h6>
-                            <p class="text-sm text-[#12132D99]">${post.author.designation ? post.author.designation : 'Unknown'}</p>
-                        </div>
-                    </div>
+        <img class="rounded-[20px]" src="${post.cover_image}" alt="">
+            <p class="mt-6 flex items-center text-[#12132D99]"><img class="mr-2" src="images/calendar.png" alt=""><span>${post.author.posted_date ? post.author.posted_date : 'No published date'}</span></p>
+            <h5 class="mt-4 font-extrabold text-lg text-prime inter-font">${post.title}</h5>
+            <p class="mt-3 text-[#12132D99]">${post.description}</p>
+            <div class="mt-4 flex items-center">
+                <img class="w-11 h-11 rounded-full" src="${post.profile_image}" alt="">
+                <div class="ml-4">
+                    <h6 class="font-bold text-prime">${post.author.name}</h6>
+                    <p class="text-sm text-[#12132D99]">${post.author.designation ? post.author.designation : 'Unknown'}</p>
+                </div>
+            </div>
         `;
         postsContainer.appendChild(postCard);
-    })
+    });
+    loadingSpinner2.classList.add('hidden');
 }
-
-loadPosts();
 
 const handleSearch = () => {
     const searchField = document.getElementById('search-field');
@@ -118,6 +117,9 @@ const handleSearch = () => {
     loadDiscussions(`?category=${searchedText}`);
 }
 
-
-
-
+loadingSpinner1.classList.remove('hidden');
+loadingSpinner2.classList.remove('hidden');
+setTimeout(() => {
+    loadDiscussions();
+    loadPosts();
+}, 2000);
