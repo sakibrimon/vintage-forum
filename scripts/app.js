@@ -1,5 +1,5 @@
-const discussionsContainer = document.getElementById('discussions-container');
-const postsContainer = document.getElementById('posts-container');
+const discussionsList = document.getElementById('discussions-list');
+const postsList = document.getElementById('posts-list');
 const loadingSpinner1 = document.getElementById('spinner1');
 const loadingSpinner2 = document.getElementById('spinner2');
 
@@ -12,7 +12,8 @@ const loadDiscussions = async (query = '') => {
 }
 
 const displayDiscussions = discussions => {
-    discussionsContainer.textContent = '';
+    discussionsList.classList.remove('hidden');
+    discussionsList.textContent = '';
     discussions.forEach((discussion, index) => {
         const discussionCard = document.createElement('div');
         discussionCard.classList = `p-10 flex min-h-[270px]# bg-[#F3F3F5] rounded-3xl inter-font`;
@@ -41,7 +42,7 @@ const displayDiscussions = discussions => {
                 </p>
             </div>
         `;
-        discussionsContainer.appendChild(discussionCard);
+        discussionsList.appendChild(discussionCard);
     });
 
     const allEnvelopes = document.getElementsByClassName("envelope");
@@ -105,7 +106,7 @@ const displayPosts = posts => {
                 </div>
             </div>
         `;
-        postsContainer.appendChild(postCard);
+        postsList.appendChild(postCard);
     });
     loadingSpinner2.classList.add('hidden');
 }
@@ -114,7 +115,11 @@ const handleSearch = () => {
     const searchField = document.getElementById('search-field');
     const searchedText = searchField.value;
     console.log(searchedText);
-    loadDiscussions(`?category=${searchedText}`);
+    loadingSpinner1.classList.remove('hidden');
+    discussionsList.classList.add('hidden');
+    setTimeout(() => {
+        loadDiscussions(`?category=${searchedText}`);
+    }, 2000);
 }
 
 loadingSpinner1.classList.remove('hidden');
